@@ -62,6 +62,7 @@ if(idxs.write("/imkvdb.arc",idb)){p("imkvdb write failed")pe()}
 if(idxs.resize("/lastPublishedId",ba0.len())){p("lastPublishedId resize failed")pe()}
 if(idxs.write("/lastPublishedId",ba0)){p("lastPublishedId write failed")pe()}
 if(idxs.commit()){p("Indexer save commit failed")pe()}
+idxs=0
 pr("Done!\nDeleting user dirs...")ud=["Album","Contents","save","saveMeta","temp"]
 if(mount("USER")){p("Mount failed!")pe()}
 ud.foreach("x"){pr("\n"+x,"")if(deldir("bis:/"+x)){p("Dir deletion failed")pe()}mkdir("bis:/"+x)}
