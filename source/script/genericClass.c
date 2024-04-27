@@ -278,6 +278,7 @@ void freeVariableInternal(Variable_t* referencedTarget) {
 			save_free_contexts(&referencedTarget->save->saveCtx);
 			f_close(&referencedTarget->save->saveFile);
 			FREE(referencedTarget->save);
+			gfx_printf("Save closed\n");
 			#endif // !WIN32
 			break;
 	}	
