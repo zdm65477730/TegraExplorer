@@ -46,6 +46,19 @@ ClassFunction(stdIf) {
 	return ret;
 }
 
+// Takes [int]. Returns empty.
+ClassFunction(stdSleep)
+{
+	s64 value = getIntValue(args[0]);
+
+	if (value)
+	{
+		msleep(value);
+	}
+
+	return &emptyClass;
+}
+
 // Takes [function, function]. Returns empty. Works by evaling the first function and running the 2nd if true.
 ClassFunction(stdWhile) {
 	Variable_t* result = eval(args[0]->function.function.operations.data, args[0]->function.function.operations.count, 1);
@@ -566,6 +579,7 @@ ClassFunctionTableEntry_t standardFunctionDefenitions[] = {
 	{"menu", stdMenuFull, 3, menuArgsStd},
 	{"menu", stdMenuFull, 2, menuArgsStd},
 	{"power", stdPower, 1, threeIntsStd},
+	{"sleep", stdSleep, 1, threeIntsStd},
 
 	// System
 	{"mountsys", stdMountSysmmc, 1, twoStringArgStd},

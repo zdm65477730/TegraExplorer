@@ -3,22 +3,92 @@ is=["8000000000000120","8000000000000000"]
 p=println
 pr=print
 pe={pause() exit()}
-wait={t=timer()while(timer()<(t+tw)){print("Wait for",(t+tw-timer()/1000),"seconds \r")}}
 p("System wiper\n")
 op=["Exit","Wipe sysmmc"].copy()
 if (emu()){op+"Wipe emummc"}
 r=menu(op,0)clear()
 if(r==0){exit()}
-if(r==1){p("Selected sysmmc")mount=mountsys}
-if(r==2){p("Selected emummc")mount=mountemu}
+if(r==1){
+	mount=mountsys
+	selected_target = "sysmmc"
+}
+if(r==2){
+	mount=mountemu
+	selected_target = "emummc"
+}
 if(mount("SYSTEM")){p("Mount failed!")pe()}
-color(0xFF0000)
-p("Are you sure you want to wipe everything?\nThis includes:\n- Saves\n- Game Data\n- All other data on the system\n\nUse this only as a last resort!")
-color(0xFFFF00)
-tw=10000
-wait()
-color(0x0000FF)
-p("Press power to wipe, any other key to exit")a=pause()if(!a.power){exit()}clear()
+clear()
+
+border = {
+	setpixels(0,0,1279,19,border_color)
+	setpixels(0,700,1279,719,border_color)
+	setpixels(0,20,19,699,border_color)
+	setpixels(1260,20,1279,699,border_color)
+}
+
+i = 20
+x_pos = 10
+y_pos = 10
+
+["WARNING!!!", 
+	"", 
+	"Do you really want to wipe your system?", 
+	"This will remove:", 
+	"- Your Save Data", 
+	"- Your Game Data", 
+	"- Your User Data", 
+	"- Critical System Calibration Data"
+	"",
+	"This script includes wiping some calibration data.",
+	"Among other uses, this data is used for battery calibration.",
+	"This is especially problematic for lite systems,",
+	"   as it makes the system initialize with unsafe",
+	"      battery calibration values!",
+	"",
+	"Restoring an emmc backup is always preferable over wiping.",
+	"",
+	"Pull requests to fix the calibration issue are welcome",
+	"https://github.com/suchmememanyskill/TegraExplorer"].foreach("line") 
+{
+	printpos(x_pos, y_pos)
+	y_pos = y_pos + 1
+	print(line)
+}
+
+time = 10000
+y_pos = y_pos + 4
+
+while (i > 0)
+{
+	i = i - 1
+	
+	if (i % 2 == 0){
+		border_color = 0xFF0000
+	}.else() {
+		border_color = 0x000000
+	}
+	
+	border()
+	sleep(500)
+	time = time - 500
+	printpos(x_pos, y_pos)
+	print("Waiting for", time / 1000, "seconds")
+}
+
+printpos(x_pos, y_pos)
+print("Ready to wipe", selected_target, "           ")
+y_pos = y_pos + 1
+printpos(x_pos, y_pos)
+print("Press the power button to wipe, any other key to exit")
+
+result = pause(0x70F000F)
+
+if (!result.power)
+{
+	exit()
+}
+
+clear()
 color(0xFF0000)
 pr("Deleting system saves... ")
 f=readdir("bis:/save")
