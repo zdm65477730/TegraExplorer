@@ -299,14 +299,14 @@ void save_free_contexts(save_ctx_t *ctx) {
 }
 
 static ALWAYS_INLINE bool save_flush(save_ctx_t *ctx) {
-    if (ctx->header.layout.version < VERSION_DISF_5) {
-        if (!save_cached_storage_flush(ctx->core_data_ivfc_storage.data_level)) {
-            EPRINTF("Failed to flush cached storage!");
-        }
-        if (save_remap_storage_write(&ctx->meta_remap_storage, ctx->fat_storage, ctx->header.layout.fat_offset, ctx->header.layout.fat_size) != ctx->header.layout.fat_size) {
-            EPRINTF("Failed to write meta remap storage!");
-        }
-    } else {
+    if (!save_cached_storage_flush(ctx->core_data_ivfc_storage.data_level)) {
+        EPRINTF("Failed to flush cached storage!");
+    }
+    if (save_remap_storage_write(&ctx->meta_remap_storage, ctx->fat_storage, ctx->header.layout.fat_offset, ctx->header.layout.fat_size) != ctx->header.layout.fat_size) {
+        EPRINTF("Failed to write meta remap storage!");
+    }
+    
+    if (ctx->header.layout.version >= VERSION_DISF_5) {
         if (!save_cached_storage_flush(ctx->fat_ivfc_storage.data_level)) {
             EPRINTF("Failed to flush cached storage!");
         }
