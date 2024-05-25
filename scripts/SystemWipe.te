@@ -28,7 +28,7 @@ border = {
 
 i = 20
 x_pos = 10
-y_pos = 10
+y_pos = 8
 
 ["WARNING!!!", 
 	"", 
@@ -37,7 +37,7 @@ y_pos = 10
 	"- Your Save Data", 
 	"- Your Game Data", 
 	"- Your User Data", 
-	"- Critical System Calibration Data"
+	"- (Some) System Calibration Data"
 	"",
 	"This script includes wiping some calibration data.",
 	"Among other uses, this data is used for battery calibration.",
@@ -46,6 +46,8 @@ y_pos = 10
 	"      battery calibration values!",
 	"",
 	"Restoring an emmc backup is always preferable over wiping.",
+	"Please only use this as a last resort.",
+	"This script is intended to be used in aid of unbricking.",
 	"",
 	"Pull requests to fix the calibration issue are welcome",
 	"https://github.com/suchmememanyskill/TegraExplorer"].foreach("line") 
