@@ -232,7 +232,7 @@ u8 nextToken(char** inPtr, void** val) {
 				if (!memcmp(t.strToken, in, (t.strToken[1] == '\0') ? 1 : 2)) {
 					//gfx_printf("Token: '%s'\n", t.strToken);
 					ret = Token_Token;
-					*val = t.token;
+					*val = (void*)t.token;
 
 					if (t.strToken[1] != '\0')
 						in++;

@@ -1,6 +1,7 @@
 #include "scriptError.h"
 #include "compat.h"
 #include <stdarg.h>
+#include "../hid/hid.h"
 
 s64 scriptCurrentLine;
 u8 scriptLastError = 0;
