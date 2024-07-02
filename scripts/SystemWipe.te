@@ -26,9 +26,9 @@ border = {
 	setpixels(1260,20,1279,699,border_color)
 }
 
-i = 20
+i = 10
 x_pos = 10
-y_pos = 8
+y_pos = 12
 
 ["WARNING!!!", 
 	"", 
@@ -37,27 +37,34 @@ y_pos = 8
 	"- Your Save Data", 
 	"- Your Game Data", 
 	"- Your User Data", 
-	"- (Some) System Calibration Data"
-	"",
-	"This script includes wiping some calibration data.",
-	"Among other uses, this data is used for battery calibration.",
-	"This is especially problematic for lite systems,",
-	"   as it makes the system initialize with unsafe",
-	"      battery calibration values!",
 	"",
 	"Restoring an emmc backup is always preferable over wiping.",
 	"Please only use this as a last resort.",
-	"This script is intended to be used in aid of unbricking.",
-	"",
-	"Pull requests to fix the calibration issue are welcome",
-	"https://github.com/suchmememanyskill/TegraExplorer"].foreach("line") 
+	"This script is intended to be used in aid of unbricking."
+].foreach("line") 
 {
 	printpos(x_pos, y_pos)
 	y_pos = y_pos + 1
 	print(line)
 }
 
-time = 10000
+if (!fsexists("bis:/save/"+is[1]))
+{
+	[
+		"",
+		"DeviceSettings save (8000000000000053) is missing!!!",
+		"This script cannot recover lost battery calibration data.",
+		"The system will initialize with default values.",
+		"These values are unsafe for lite systems!"
+	].foreach("line") 
+	{
+		printpos(x_pos, y_pos)
+		y_pos = y_pos + 1
+		print(line)
+	}
+}
+
+time = 5000
 y_pos = y_pos + 4
 
 while (i > 0)
