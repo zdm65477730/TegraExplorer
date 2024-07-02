@@ -122,37 +122,6 @@ if(fsexists("bis:/save/"+is[0]))
 	idb.add(0x00)
 	idb.add(0x00)
 
-	# 120 save
-	s=getfilesize("bis:/save/"+is[0])
-	s1=s&0xFF
-	s2=(s>>8)&0xFF
-	s3=(s>>16)&0xFF
-	s4=(s>>24)&0xFF
-	idb.addrange(imen)
-	idb.addrange(ba0)
-	idb.addrange(ba0)
-	idb.addrange(ba0)
-	idb.addrange(ba120)
-	idb.addrange(ba0)
-	idb.addrange(ba0)
-	idb.addrange(ba0)
-	idb.addrange(ba0)
-	idb.addrange(ba120)
-	idb.add(s1)
-	idb.add(s2)
-	idb.add(s3)
-	idb.add(s4)
-	idb.add(0x00)
-	idb.add(0x00)
-	idb.add(0x00)
-	idb.add(0x00)
-	idb.addrange(ba0)
-	idb.addrange(ba0)
-	idb.addrange(ba0)
-	idb.addrange(ba0)
-	idb.addrange(ba0)
-	idb.addrange(ba0)
-
 	if(!skip53)
 	{
 		# 53 save
@@ -186,6 +155,37 @@ if(fsexists("bis:/save/"+is[0]))
 		idb.addrange(ba0)
 		idb.addrange(ba0)
 	}
+
+	# 120 save
+	s=getfilesize("bis:/save/"+is[0])
+	s1=s&0xFF
+	s2=(s>>8)&0xFF
+	s3=(s>>16)&0xFF
+	s4=(s>>24)&0xFF
+	idb.addrange(imen)
+	idb.addrange(ba0)
+	idb.addrange(ba0)
+	idb.addrange(ba0)
+	idb.addrange(ba120)
+	idb.addrange(ba0)
+	idb.addrange(ba0)
+	idb.addrange(ba0)
+	idb.addrange(ba0)
+	idb.addrange(ba120)
+	idb.add(s1)
+	idb.add(s2)
+	idb.add(s3)
+	idb.add(s4)
+	idb.add(0x00)
+	idb.add(0x00)
+	idb.add(0x00)
+	idb.add(0x00)
+	idb.addrange(ba0)
+	idb.addrange(ba0)
+	idb.addrange(ba0)
+	idb.addrange(ba0)
+	idb.addrange(ba0)
+	idb.addrange(ba0)
 
 	idxs=readsave("bis:/save/"+is[2])
 	if(idxs.resize("/imkvdb.arc",idb.len())){p("imkvdb resize failed")pe()}
