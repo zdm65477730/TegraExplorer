@@ -18,6 +18,7 @@
 #include <string.h>
 #include "../fs/fscopy.h"
 #include "../utils/utils.h"
+#include <display/di.h>
 
 extern sdmmc_storage_t sd_storage;
 extern bool is_sd_inited;
