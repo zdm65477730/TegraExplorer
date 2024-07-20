@@ -280,20 +280,23 @@ void ipl_main()
 	gfx_clearscreen();
 
 	int res = -1;
+	const char *prod_key_path = "sd:/atmosphere/automatic_backups/dumps/prod.keys";
+	if (!FileExists(prod_key_path))
+		prod_key_path = "sd:/switch/prod.keys";
 
-	if (btn_read() & BTN_VOL_DOWN || DumpKeys())
-		res = GetKeysFromFile("sd:/switch/prod.keys");
+	if (FileExists(prod_key_path)) {
+		if (btn_read() & BTN_VOL_DOWN || DumpKeys())
+			res = GetKeysFromFile(prod_key_path);
+	}
 
-	TConf.keysDumped = (res > 0) ? 0 : 1;
-
-	if (res > 0)
-		DrawError(newErrCode(TE_ERR_KEYDUMP_FAIL));
-	
+	TConf.keysDumped = (res == 0) ? 1 : 0;
 	if (TConf.keysDumped)
 		SetKeySlots();
-	
+
 	if (res == 0)
 		hidWait();
+	else
+		DrawError(newErrCode(TE_ERR_KEYDUMP_FAIL));
 
 	if (FileExists("sd:/startup.te"))
 		RunScript("sd:/", newFSEntry("startup.te"));
