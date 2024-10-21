@@ -55,7 +55,7 @@ typedef struct _bl_hdr_t210b01_t
 
 static int  _key_exists(const void *data) { return memcmp(data, "\x00\x00\x00\x00\x00\x00\x00\x00", 8) != 0; };
 
-static ALWAYS_INLINE u8 *_find_tsec_fw(const u8 *pkg1) {
+static inline __attribute__((always_inline)) u8 *_find_tsec_fw(const u8 *pkg1) {
     const u32 tsec_fw_align = 0x100;
     const u32 tsec_fw_first_instruction = 0xCF42004D;
 
@@ -66,7 +66,7 @@ static ALWAYS_INLINE u8 *_find_tsec_fw(const u8 *pkg1) {
     return NULL;
 }
 
-static ALWAYS_INLINE u32 _get_tsec_fw_size(tsec_key_data_t *key_data) {
+static inline __attribute__((always_inline)) u32 _get_tsec_fw_size(tsec_key_data_t *key_data) {
     return key_data->blob0_size + sizeof(tsec_key_data_t) + key_data->blob1_size + key_data->blob2_size + key_data->blob3_size + key_data->blob4_size;
 }
 
@@ -171,7 +171,7 @@ static int _derive_master_keys_from_keyblobs(key_derivation_ctx_t *keys) {
     se_aes_crypt_block_ecb(7, 0, keys->device_key_4x, device_master_key_source_kek_source);
     
     se_aes_key_set(10, keys->keyblob_mac_key, sizeof(keys->keyblob_mac_key));
-    se_aes_cmac(10, keyblob_mac, sizeof(keyblob_mac), current_keyblob->iv, sizeof(current_keyblob->iv) + sizeof(keyblob_t));
+    se_aes_cmac_128(10, keyblob_mac, current_keyblob->iv, sizeof(current_keyblob->iv) + sizeof(keyblob_t));
     if (memcmp(current_keyblob, keyblob_mac, sizeof(keyblob_mac)) != 0) {
         //EPRINTFARGS("Keyblob %x corrupt.", 0);
         free(keyblob_block);
@@ -227,7 +227,7 @@ static bool _derive_tsec_keys(tsec_ctxt_t *tsec_ctxt, key_derivation_ctx_t *keys
     return true;
 }
 
-static ALWAYS_INLINE u8 *_read_pkg1() {
+static inline __attribute__((always_inline)) u8 *_read_pkg1() {
 
     /*
     if (emummc_storage_init_mmc(&emmc_storage, &emmc_sdmmc)) {

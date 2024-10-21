@@ -43,7 +43,7 @@ void save_fs_list_init(save_filesystem_list_ctx_t *ctx) {
     ctx->used_list_head_index = 1;
 }
 
-static ALWAYS_INLINE uint32_t save_fs_list_get_capacity(save_filesystem_list_ctx_t *ctx) {
+static inline __attribute__((always_inline)) uint32_t save_fs_list_get_capacity(save_filesystem_list_ctx_t *ctx) {
     uint32_t capacity;
     if (save_allocation_table_storage_read(&ctx->storage, &capacity, 4, 4) != 4) {
         EPRINTF("Failed to read FS list capacity!");
@@ -52,7 +52,7 @@ static ALWAYS_INLINE uint32_t save_fs_list_get_capacity(save_filesystem_list_ctx
     return capacity;
 }
 
-static ALWAYS_INLINE uint32_t save_fs_list_get_length(save_filesystem_list_ctx_t *ctx) {
+static inline __attribute__((always_inline)) uint32_t save_fs_list_get_length(save_filesystem_list_ctx_t *ctx) {
     uint32_t length;
     if (save_allocation_table_storage_read(&ctx->storage, &length, 0, 4) != 4) {
         EPRINTF("Failed to read FS list length!");
@@ -61,11 +61,11 @@ static ALWAYS_INLINE uint32_t save_fs_list_get_length(save_filesystem_list_ctx_t
     return length;
 }
 
-static ALWAYS_INLINE bool save_fs_list_set_capacity(save_filesystem_list_ctx_t *ctx, uint32_t capacity) {
+static inline __attribute__((always_inline)) bool save_fs_list_set_capacity(save_filesystem_list_ctx_t *ctx, uint32_t capacity) {
     return save_allocation_table_storage_write(&ctx->storage, &capacity, 4, 4) == 4;
 }
 
-static ALWAYS_INLINE bool save_fs_list_set_length(save_filesystem_list_ctx_t *ctx, uint32_t length) {
+static inline __attribute__((always_inline)) bool save_fs_list_set_length(save_filesystem_list_ctx_t *ctx, uint32_t length) {
     return save_allocation_table_storage_write(&ctx->storage, &length, 0, 4) == 4;
 }
 
@@ -250,7 +250,7 @@ uint32_t save_fs_list_allocate_entry(save_filesystem_list_ctx_t *ctx) {
     if (capacity == 0 || length >= capacity) {
         uint64_t current_size, new_size;
         save_allocation_table_storage_get_size(&ctx->storage, &current_size);
-        if (!save_allocation_table_storage_set_size(&ctx->storage, current_size + SZ_16K))
+        if (!save_allocation_table_storage_set_size(&ctx->storage, current_size + 0x4000))
             return 0;
         save_allocation_table_storage_get_size(&ctx->storage, &new_size);
         if (!save_fs_list_set_capacity(ctx, (uint32_t)(new_size / sizeof(save_fs_list_entry_t))))

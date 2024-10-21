@@ -39,7 +39,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 #include <string.h>
 
-static ALWAYS_INLINE cache_block_t *cache_block_init(cached_storage_ctx_t *ctx) {
+static inline __attribute__((always_inline)) cache_block_t *cache_block_init(cached_storage_ctx_t *ctx) {
     cache_block_t *block = calloc(1, sizeof(cache_block_t));
     block->buffer = malloc(ctx->block_size);
     block->index = -1;

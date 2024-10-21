@@ -28,12 +28,12 @@ typedef struct {
     uint32_t high;
 } fs_int64_t;
 
-static ALWAYS_INLINE void fs_int64_set(fs_int64_t *i, int64_t val) {
+static inline __attribute__((always_inline)) void fs_int64_set(fs_int64_t *i, int64_t val) {
     i->low  = (uint32_t)((val & (uint64_t)(0x00000000FFFFFFFFul)) >>  0);
     i->high = (uint32_t)((val & (uint64_t)(0xFFFFFFFF00000000ul)) >> 32);
 }
 
-static ALWAYS_INLINE const int64_t fs_int64_get(fs_int64_t *i) {
+static inline __attribute__((always_inline)) const int64_t fs_int64_get(fs_int64_t *i) {
     return ((int64_t)(i->high) << 32) | ((int64_t)i->low);
 }
 

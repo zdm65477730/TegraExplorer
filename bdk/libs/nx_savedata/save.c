@@ -38,7 +38,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <mem/heap.h>
 #include <rtc/max77620-rtc.h>
 #include <sec/se.h>
-#include <storage/nx_sd.h>
+#include <storage/sd.h>
 #include <utils/ini.h>
 #include <utils/sprintf.h>
 
@@ -106,7 +106,7 @@ static bool save_process_header(save_ctx_t *ctx) {
 
     uint8_t cmac[0x10] __attribute__((aligned(4)));
     se_aes_key_set(10, ctx->save_mac_key, 0x10);
-    se_aes_cmac(10, cmac, 0x10, &ctx->header.layout, sizeof(ctx->header.layout));
+    se_aes_cmac_128(10, cmac, &ctx->header.layout, sizeof(ctx->header.layout));
     if (memcmp(cmac, &ctx->header.cmac, 0x10) == 0) {
         ctx->header_cmac_validity = VALIDITY_VALID;
     } else {
@@ -298,15 +298,15 @@ void save_free_contexts(save_ctx_t *ctx) {
         free(ctx->fat_storage);
 }
 
-static ALWAYS_INLINE bool save_flush(save_ctx_t *ctx) {
-    if (!save_cached_storage_flush(ctx->core_data_ivfc_storage.data_level)) {
-        EPRINTF("Failed to flush cached storage!");
-    }
-    if (save_remap_storage_write(&ctx->meta_remap_storage, ctx->fat_storage, ctx->header.layout.fat_offset, ctx->header.layout.fat_size) != ctx->header.layout.fat_size) {
-        EPRINTF("Failed to write meta remap storage!");
-    }
-    
-    if (ctx->header.layout.version >= VERSION_DISF_5) {
+static inline __attribute__((always_inline)) bool save_flush(save_ctx_t *ctx) {
+    if (ctx->header.layout.version < VERSION_DISF_5) {
+        if (!save_cached_storage_flush(ctx->core_data_ivfc_storage.data_level)) {
+            EPRINTF("Failed to flush cached storage!");
+        }
+        if (save_remap_storage_write(&ctx->meta_remap_storage, ctx->fat_storage, ctx->header.layout.fat_offset, ctx->header.layout.fat_size) != ctx->header.layout.fat_size) {
+            EPRINTF("Failed to write meta remap storage!");
+        }
+    } else {
         if (!save_cached_storage_flush(ctx->fat_ivfc_storage.data_level)) {
             EPRINTF("Failed to flush cached storage!");
         }
@@ -329,7 +329,7 @@ bool save_commit(save_ctx_t *ctx) {
     se_calc_sha256_oneshot(ctx->header.layout.hash, header + hashed_data_offset, hashed_data_size);
 
     se_aes_key_set(10, ctx->save_mac_key, 0x10);
-    se_aes_cmac(10, ctx->header.cmac, 0x10, &ctx->header.layout, sizeof(ctx->header.layout));
+    se_aes_cmac_128(10, ctx->header.cmac, &ctx->header.layout, sizeof(ctx->header.layout));
 
     if (substorage_write(&ctx->base_storage, &ctx->header, 0, sizeof(ctx->header)) != sizeof(ctx->header)) {
         EPRINTF("Failed to write save header!");

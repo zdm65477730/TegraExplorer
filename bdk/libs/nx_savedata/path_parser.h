@@ -47,7 +47,7 @@ typedef struct {
     bool _finished;
 } path_parser_ctx_t;
 
-static ALWAYS_INLINE bool save_path_parser_is_finished(path_parser_ctx_t *ctx) {
+static inline __attribute__((always_inline)) bool save_path_parser_is_finished(path_parser_ctx_t *ctx) {
     return ctx->_finished;
 }
 

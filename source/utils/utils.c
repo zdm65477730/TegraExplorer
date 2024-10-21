@@ -3,6 +3,7 @@
 #include <utils/types.h>
 #include <mem/heap.h>
 #include <utils/util.h>
+#include <soc/timer.h>
 #include "vector.h"
 #include "../gfx/gfxutils.h"
 #include "../gfx/gfx.h"
@@ -15,15 +16,15 @@ extern hekate_config h_cfg;
 
 extern int launch_payload(char *path);
 
-void ALWAYS_INLINE power_off(){
+void inline __attribute__((always_inline)) power_off(){
     power_set_state(POWER_OFF_RESET);
 }
 
-void ALWAYS_INLINE reboot_rcm(){
+void inline __attribute__((always_inline)) reboot_rcm(){
     power_set_state(REBOOT_RCM);
 }
 
-void ALWAYS_INLINE reboot_normal(){
+void inline __attribute__((always_inline)) reboot_normal(){
     power_set_state((h_cfg.t210b01) ? REBOOT_BYPASS_FUSES : POWER_OFF_REBOOT);
 }
 

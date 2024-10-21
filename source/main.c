@@ -139,12 +139,12 @@ int launch_payload(char *path)
 		{
 			reloc_patcher(PATCHED_RELOC_ENTRY, EXT_PAYLOAD_ADDR, ALIGN(size, 0x10));
 
-			hw_reinit_workaround(false, byte_swap_32(*(u32 *)(buf + size - sizeof(u32))));
+			hw_deinit(false, byte_swap_32(*(u32 *)(buf + size - sizeof(u32))));
 		}
 		else
 		{
 			reloc_patcher(PATCHED_RELOC_ENTRY, EXT_PAYLOAD_ADDR, 0x7000);
-			hw_reinit_workaround(true, 0);
+			hw_deinit(true, 0);
 		}
 
 		// Some cards (Sandisk U1), do not like a fast power cycle. Wait min 100ms.
@@ -234,7 +234,7 @@ void ipl_main()
 	pivot_stack(IPL_STACK_TOP);
 
 	// Tegra/Horizon configuration goes to 0x80000000+, package2 goes to 0xA9800000, we place our heap in between.
-	heap_init(IPL_HEAP_START);
+	heap_init((void *)IPL_HEAP_START);
 
 #ifdef DEBUG_UART_PORT
 	uart_send(DEBUG_UART_PORT, (u8 *)"hekate: Hello!\r\n", 16);
@@ -255,7 +255,7 @@ void ipl_main()
 
 	display_init();
 
-	u32 *fb = display_init_framebuffer_pitch();
+	u32 *fb = display_init_window_a_pitch();
 	gfx_init_ctxt(fb, 720, 1280, 720);
 
 	gfx_con_init();

@@ -39,6 +39,13 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 #include <stdint.h>
 
+typedef enum
+{
+	VALIDITY_UNCHECKED = 0,
+	VALIDITY_INVALID,
+	VALIDITY_VALID
+} validity_t;
+
 typedef struct {
     substorage hash_storage;
     int integrity_check_level;

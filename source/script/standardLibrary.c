@@ -23,6 +23,7 @@
 #include "../tegraexplorer/tconf.h"
 #include "../storage/emummc.h"
 #include <utils/util.h>
+#include <soc/timer.h>
 #include "../fs/fsutils.h"
 #include <storage/nx_sd.h>
 #include "../storage/emmcfile.h"

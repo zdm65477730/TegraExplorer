@@ -1125,7 +1125,7 @@ static void _sdram_lp0_save_params_t210(const void *params)
 	c32(0, scratch4);
 	s(PllMStableTime, 9:0, scratch4, 9:0);
 }
-/*
+
 #pragma GCC diagnostic ignored "-Wparentheses"
 
 static void _sdram_lp0_save_params_t210b01(const void *params)
@@ -1526,13 +1526,13 @@ static void _sdram_lp0_save_params_t210b01(const void *params)
 }
 
 #pragma GCC diagnostic pop
-*/
+
 void sdram_lp0_save_params(const void *params)
 {
-	// u32 chip_id = (APB_MISC(APB_MISC_GP_HIDREV) >> 4) & 0xF;
+	u32 chip_id = (APB_MISC(APB_MISC_GP_HIDREV) >> 4) & 0xF;
 
-	// if (chip_id != GP_HIDREV_MAJOR_T210B01)
+	if (chip_id != GP_HIDREV_MAJOR_T210B01)
 		_sdram_lp0_save_params_t210(params);
-	// else
-	// 	_sdram_lp0_save_params_t210b01(params);
+	else
+		_sdram_lp0_save_params_t210b01(params);
 }

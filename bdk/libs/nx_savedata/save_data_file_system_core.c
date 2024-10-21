@@ -41,7 +41,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <gfx_utils.h>
 #include <mem/heap.h>
 
-static ALWAYS_INLINE bool save_data_file_system_core_open_fat_storage(save_data_file_system_core_ctx_t *ctx, allocation_table_storage_ctx_t *storage_ctx, uint32_t block_index) {
+static inline __attribute__((always_inline)) bool save_data_file_system_core_open_fat_storage(save_data_file_system_core_ctx_t *ctx, allocation_table_storage_ctx_t *storage_ctx, uint32_t block_index) {
     return save_allocation_table_storage_init(storage_ctx, ctx->base_storage, &ctx->allocation_table, (uint32_t)ctx->header->block_size, block_index);
 }
 

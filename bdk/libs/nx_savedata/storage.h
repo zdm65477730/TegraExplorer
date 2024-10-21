@@ -39,6 +39,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 #include <utils/types.h>
 
+#define DIV_ROUND_UP(a, b) ((a + b - 1) / b)
+
 typedef struct {
     uint32_t (*read)(void *ctx, void *buffer, uint64_t offset, uint64_t count);
     uint32_t (*write)(void *ctx, const void *buffer, uint64_t offset, uint64_t count);
@@ -51,7 +53,7 @@ typedef struct {
     void *ctx;
 } storage;
 
-static void ALWAYS_INLINE storage_init(storage *this, const storage_vt *vt, void *ctx) {
+static void inline __attribute__((always_inline)) storage_init(storage *this, const storage_vt *vt, void *ctx) {
     this->vt = vt;
     this->ctx = ctx;
 }
@@ -65,15 +67,15 @@ typedef struct {
 void substorage_init(substorage *this, const storage_vt *vt, void *ctx, uint64_t offset, uint64_t length);
 bool substorage_init_from_other(substorage *this, const substorage *other, uint64_t offset, uint64_t length);
 
-static ALWAYS_INLINE uint32_t substorage_read(substorage *ctx, void *buffer, uint64_t offset, uint64_t count) {
+static inline __attribute__((always_inline)) uint32_t substorage_read(substorage *ctx, void *buffer, uint64_t offset, uint64_t count) {
     return ctx->base_storage.vt->read(ctx->base_storage.ctx, buffer, ctx->offset + offset, count);
 }
 
-static ALWAYS_INLINE uint32_t substorage_write(substorage *ctx, const void *buffer, uint64_t offset, uint64_t count) {
+static inline __attribute__((always_inline)) uint32_t substorage_write(substorage *ctx, const void *buffer, uint64_t offset, uint64_t count) {
     return ctx->base_storage.vt->write(ctx->base_storage.ctx, buffer, ctx->offset + offset, count);
 }
 
-static ALWAYS_INLINE void substorage_get_size(substorage *ctx, uint64_t *out_size) {
+static inline __attribute__((always_inline)) void substorage_get_size(substorage *ctx, uint64_t *out_size) {
     ctx->base_storage.vt->get_size(ctx->base_storage.ctx, out_size);
 }
 
@@ -162,7 +164,7 @@ static const storage_vt hierarchical_duplex_storage_vt = {
     save_hierarchical_duplex_storage_get_size_wrapper
 };
 
-static ALWAYS_INLINE bool is_range_valid(uint64_t offset, uint64_t size, uint64_t total_size) {
+static inline __attribute__((always_inline)) bool is_range_valid(uint64_t offset, uint64_t size, uint64_t total_size) {
     return  offset >= 0 &&
             size >= 0 &&
             size <= total_size &&

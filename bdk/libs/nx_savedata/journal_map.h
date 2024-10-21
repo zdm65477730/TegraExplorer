@@ -71,11 +71,11 @@ typedef struct {
     uint8_t *free_blocks;
 } journal_map_ctx_t;
 
-static ALWAYS_INLINE uint32_t save_journal_map_entry_make_physical_index(uint32_t index) {
+static inline __attribute__((always_inline)) uint32_t save_journal_map_entry_make_physical_index(uint32_t index) {
     return index | 0x80000000;
 }
 
-static ALWAYS_INLINE uint32_t save_journal_map_entry_get_physical_index(uint32_t index) {
+static inline __attribute__((always_inline)) uint32_t save_journal_map_entry_get_physical_index(uint32_t index) {
     return index & 0x7FFFFFFF;
 }
 

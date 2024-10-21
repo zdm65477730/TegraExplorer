@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 shchmue
+ * Copyright (c) 2019-2020 shchmue
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU General Public License,
@@ -41,7 +41,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <stdint.h>
 
 #define RMAP_ALIGN_SMALL 0x200
-#define RMAP_ALIGN_LARGE SZ_16K
+#define RMAP_ALIGN_LARGE 0x4000
 
 typedef struct {
     uint32_t magic; /* RMAP */
@@ -89,11 +89,11 @@ typedef struct {
     substorage base_storage;
 } remap_storage_ctx_t;
 
-static ALWAYS_INLINE uint32_t save_remap_get_segment_from_virtual_offset(remap_header_t *header, uint64_t offset) {
+static inline __attribute__((always_inline)) uint32_t save_remap_get_segment_from_virtual_offset(remap_header_t *header, uint64_t offset) {
     return (uint32_t)(offset >> (64 - header->segment_bits));
 }
 
-static ALWAYS_INLINE uint64_t save_remap_get_virtual_offset(remap_header_t *header, uint64_t segment) {
+static inline __attribute__((always_inline)) uint64_t save_remap_get_virtual_offset(remap_header_t *header, uint64_t segment) {
     return segment << (64 - header->segment_bits);
 }
 

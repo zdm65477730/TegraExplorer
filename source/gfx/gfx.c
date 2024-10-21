@@ -19,6 +19,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include "gfx.h"
+#include "gfxutils.h"
 
 gfx_ctxt_t gfx_ctxt;
 gfx_con_t gfx_con;
