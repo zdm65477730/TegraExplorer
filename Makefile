@@ -71,6 +71,8 @@ clean:
 	@rm -rf $(BUILDDIR)
 	@rm -rf $(OUTPUTDIR)
 	@rm -rf $(LOADERDIR)/payload_*.h
+	@rm -rf $(LZ77DIR)/lz77
+	@rm -rf $(BIN2CDIR)/bin2c
 
 $(OUTPUTDIR)/$(TARGET)_small.bin: $(OUTPUTDIR)/$(TARGET).bin
 	@$(MAKE) -C $(LZ77DIR)
