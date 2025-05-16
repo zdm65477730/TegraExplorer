@@ -80,7 +80,7 @@ remap_segment_ctx_t *save_remap_storage_init_segments(remap_storage_ctx_t *ctx) 
     return segments;
 }
 
-static ALWAYS_INLINE remap_entry_ctx_t *save_remap_storage_get_map_entry(remap_storage_ctx_t *ctx, uint64_t offset) {
+static inline __attribute__((always_inline)) remap_entry_ctx_t *save_remap_storage_get_map_entry(remap_storage_ctx_t *ctx, uint64_t offset) {
     uint32_t segment_idx = save_remap_get_segment_from_virtual_offset(ctx->header, offset);
     if (segment_idx < ctx->header->map_segment_count) {
         for (unsigned int i = 0; i < ctx->segments[segment_idx].entry_count; i++) {

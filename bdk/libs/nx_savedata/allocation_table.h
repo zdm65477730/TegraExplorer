@@ -70,89 +70,89 @@ typedef struct {
     allocation_table_header_t *header;
 } allocation_table_ctx_t;
 
-static ALWAYS_INLINE uint32_t allocation_table_entry_index_to_block(uint32_t entry_index) {
+static inline __attribute__((always_inline)) uint32_t allocation_table_entry_index_to_block(uint32_t entry_index) {
     return entry_index - 1;
 }
 
-static ALWAYS_INLINE uint32_t allocation_table_block_to_entry_index(uint32_t block_index) {
+static inline __attribute__((always_inline)) uint32_t allocation_table_block_to_entry_index(uint32_t block_index) {
     return block_index + 1;
 }
 
-static ALWAYS_INLINE int allocation_table_get_prev(allocation_table_entry_t *entry) {
+static inline __attribute__((always_inline)) int allocation_table_get_prev(allocation_table_entry_t *entry) {
     return entry->prev & 0x7FFFFFFF;
 }
 
-static ALWAYS_INLINE int allocation_table_get_next(allocation_table_entry_t *entry) {
+static inline __attribute__((always_inline)) int allocation_table_get_next(allocation_table_entry_t *entry) {
     return entry->next & 0x7FFFFFFF;
 }
 
-static ALWAYS_INLINE int allocation_table_is_list_start(allocation_table_entry_t *entry) {
+static inline __attribute__((always_inline)) int allocation_table_is_list_start(allocation_table_entry_t *entry) {
     return entry->prev == 0x80000000;
 }
 
-static ALWAYS_INLINE int allocation_table_is_list_end(allocation_table_entry_t *entry) {
+static inline __attribute__((always_inline)) int allocation_table_is_list_end(allocation_table_entry_t *entry) {
     return (entry->next & 0x7FFFFFFF) == 0;
 }
 
-static ALWAYS_INLINE bool allocation_table_is_multi_block_segment(allocation_table_entry_t *entry) {
+static inline __attribute__((always_inline)) bool allocation_table_is_multi_block_segment(allocation_table_entry_t *entry) {
     return entry->next & 0x80000000;
 }
 
-static ALWAYS_INLINE void allocation_table_make_multi_block_segment(allocation_table_entry_t *entry) {
+static inline __attribute__((always_inline)) void allocation_table_make_multi_block_segment(allocation_table_entry_t *entry) {
     entry->next |= 0x80000000;
 }
 
-static ALWAYS_INLINE void allocation_table_make_single_block_segment(allocation_table_entry_t *entry) {
+static inline __attribute__((always_inline)) void allocation_table_make_single_block_segment(allocation_table_entry_t *entry) {
     entry->next &= 0x7FFFFFFF;
 }
 
-static ALWAYS_INLINE bool allocation_table_is_single_block_segment(allocation_table_entry_t *entry) {
+static inline __attribute__((always_inline)) bool allocation_table_is_single_block_segment(allocation_table_entry_t *entry) {
     return (entry->next & 0x80000000) == 0;
 }
 
-static ALWAYS_INLINE void allocation_table_make_list_start(allocation_table_entry_t *entry) {
+static inline __attribute__((always_inline)) void allocation_table_make_list_start(allocation_table_entry_t *entry) {
     entry->prev = 0x80000000;
 }
 
-static ALWAYS_INLINE bool allocation_table_is_range_entry(allocation_table_entry_t *entry) {
+static inline __attribute__((always_inline)) bool allocation_table_is_range_entry(allocation_table_entry_t *entry) {
     return (entry->prev & 0x80000000) == 0x80000000 && entry->prev != 0x80000000;
 }
 
-static ALWAYS_INLINE void allocation_table_make_range_entry(allocation_table_entry_t *entry) {
+static inline __attribute__((always_inline)) void allocation_table_make_range_entry(allocation_table_entry_t *entry) {
     entry->prev |= 0x80000000;
 }
 
-static ALWAYS_INLINE void allocation_table_set_next(allocation_table_entry_t *entry, int val) {
+static inline __attribute__((always_inline)) void allocation_table_set_next(allocation_table_entry_t *entry, int val) {
     entry->next = (entry->next & 0x80000000) | val;
 }
 
-static ALWAYS_INLINE void allocation_table_set_prev(allocation_table_entry_t *entry, int val) {
+static inline __attribute__((always_inline)) void allocation_table_set_prev(allocation_table_entry_t *entry, int val) {
     entry->prev = val;
 }
 
-static ALWAYS_INLINE void allocation_table_set_range(allocation_table_entry_t *entry, int start_index, int end_index) {
+static inline __attribute__((always_inline)) void allocation_table_set_range(allocation_table_entry_t *entry, int start_index, int end_index) {
     entry->next = end_index;
     entry->prev = start_index;
     allocation_table_make_range_entry(entry);
 }
 
-static ALWAYS_INLINE uint64_t allocation_table_query_size(uint32_t block_count) {
+static inline __attribute__((always_inline)) uint64_t allocation_table_query_size(uint32_t block_count) {
     return SAVE_FAT_ENTRY_SIZE * allocation_table_block_to_entry_index(block_count);
 }
 
-static ALWAYS_INLINE allocation_table_entry_t *save_allocation_table_read_entry(allocation_table_ctx_t *ctx, uint32_t entry_index) {
+static inline __attribute__((always_inline)) allocation_table_entry_t *save_allocation_table_read_entry(allocation_table_ctx_t *ctx, uint32_t entry_index) {
     return (allocation_table_entry_t *)((uint8_t *)ctx->base_storage + entry_index * SAVE_FAT_ENTRY_SIZE);
 }
 
-static ALWAYS_INLINE void save_allocation_table_write_entry(allocation_table_ctx_t *ctx, uint32_t entry_index, allocation_table_entry_t *entry) {
+static inline __attribute__((always_inline)) void save_allocation_table_write_entry(allocation_table_ctx_t *ctx, uint32_t entry_index, allocation_table_entry_t *entry) {
     memcpy((uint8_t *)ctx->base_storage + entry_index * SAVE_FAT_ENTRY_SIZE, entry, SAVE_FAT_ENTRY_SIZE);
 }
 
-static ALWAYS_INLINE uint32_t save_allocation_table_get_free_list_entry_index(allocation_table_ctx_t *ctx) {
+static inline __attribute__((always_inline)) uint32_t save_allocation_table_get_free_list_entry_index(allocation_table_ctx_t *ctx) {
     return allocation_table_get_next(save_allocation_table_read_entry(ctx, ctx->free_list_entry_index));
 }
 
-static ALWAYS_INLINE uint32_t save_allocation_table_get_free_list_block_index(allocation_table_ctx_t *ctx) {
+static inline __attribute__((always_inline)) uint32_t save_allocation_table_get_free_list_block_index(allocation_table_ctx_t *ctx) {
     return allocation_table_entry_index_to_block(save_allocation_table_get_free_list_entry_index(ctx));
 }
 

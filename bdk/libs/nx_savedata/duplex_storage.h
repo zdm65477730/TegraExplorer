@@ -57,15 +57,15 @@ typedef struct {
     substorage base_storage;
 } duplex_storage_ctx_t;
 
-static ALWAYS_INLINE void save_bitmap_set_bit(void *buffer, uint64_t bit_offset) {
+static inline __attribute__((always_inline)) void save_bitmap_set_bit(void *buffer, uint64_t bit_offset) {
     *((uint8_t *)buffer + (bit_offset >> 3)) |= 1 << (bit_offset & 7);
 }
 
-static ALWAYS_INLINE void save_bitmap_clear_bit(void *buffer, uint64_t bit_offset) {
+static inline __attribute__((always_inline)) void save_bitmap_clear_bit(void *buffer, uint64_t bit_offset) {
     *((uint8_t *)buffer + (bit_offset >> 3)) &= ~(uint8_t)(1 << (bit_offset & 7));
 }
 
-static ALWAYS_INLINE uint8_t save_bitmap_check_bit(const void *buffer, uint64_t bit_offset) {
+static inline __attribute__((always_inline)) uint8_t save_bitmap_check_bit(const void *buffer, uint64_t bit_offset) {
     return *((uint8_t *)buffer + (bit_offset >> 3)) & (1 << (bit_offset & 7));
 }
 

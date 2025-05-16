@@ -49,20 +49,20 @@ typedef struct {
     hierarchical_save_file_table_ctx_t file_table;
 } save_data_file_system_core_ctx_t;
 
-static ALWAYS_INLINE bool save_data_file_system_core_rename_directory(save_data_file_system_core_ctx_t *ctx, const char *old_path, const char *new_path) {
+static inline __attribute__((always_inline)) bool save_data_file_system_core_rename_directory(save_data_file_system_core_ctx_t *ctx, const char *old_path, const char *new_path) {
     return save_hierarchical_file_table_rename_directory(&ctx->file_table, old_path, new_path);
 }
 
-static ALWAYS_INLINE bool save_data_file_system_core_rename_file(save_data_file_system_core_ctx_t *ctx, const char *old_path, const char *new_path) {
+static inline __attribute__((always_inline)) bool save_data_file_system_core_rename_file(save_data_file_system_core_ctx_t *ctx, const char *old_path, const char *new_path) {
     return save_hierarchical_file_table_rename_file(&ctx->file_table, old_path, new_path);
 }
 
-static ALWAYS_INLINE void save_data_file_system_core_get_free_space_size(save_data_file_system_core_ctx_t *ctx, uint64_t *out_free_space) {
+static inline __attribute__((always_inline)) void save_data_file_system_core_get_free_space_size(save_data_file_system_core_ctx_t *ctx, uint64_t *out_free_space) {
     uint32_t free_block_count = save_allocation_table_get_free_list_length(&ctx->allocation_table);
     *out_free_space = ctx->header->block_size * free_block_count;
 }
 
-static ALWAYS_INLINE void save_data_file_system_core_get_total_space_size(save_data_file_system_core_ctx_t *ctx, uint64_t *out_total_space) {
+static inline __attribute__((always_inline)) void save_data_file_system_core_get_total_space_size(save_data_file_system_core_ctx_t *ctx, uint64_t *out_total_space) {
     *out_total_space = ctx->header->block_size * ctx->header->block_count;
 }
 

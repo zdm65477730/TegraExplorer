@@ -48,7 +48,7 @@ typedef struct {
     uint64_t _length;
 } allocation_table_storage_ctx_t;
 
-static ALWAYS_INLINE void save_allocation_table_storage_get_size(allocation_table_storage_ctx_t *ctx, uint64_t *out_size) {
+static inline __attribute__((always_inline)) void save_allocation_table_storage_get_size(allocation_table_storage_ctx_t *ctx, uint64_t *out_size) {
     *out_size = ctx->_length;
 }
 

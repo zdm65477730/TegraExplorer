@@ -95,7 +95,7 @@ typedef struct {
 
 static_assert(sizeof(save_data_creation_info_t) == 0x40, "Save data creation info size is wrong!");
 
-static ALWAYS_INLINE uint32_t save_calc_map_entry_storage_size(int32_t entry_count) {
+static inline __attribute__((always_inline)) uint32_t save_calc_map_entry_storage_size(int32_t entry_count) {
     int32_t val = entry_count < 1 ? entry_count : entry_count - 1;
     return (entry_count + (val >> 1)) * sizeof(remap_entry_t);
 }
@@ -107,47 +107,47 @@ bool save_create_system_save_data(save_ctx_t *ctx, uint32_t version, const char 
 void save_free_contexts(save_ctx_t *ctx);
 bool save_commit(save_ctx_t *ctx);
 
-static ALWAYS_INLINE bool save_create_directory(save_ctx_t *ctx, const char *path) {
+static inline __attribute__((always_inline)) bool save_create_directory(save_ctx_t *ctx, const char *path) {
     return save_data_file_system_core_create_directory(&ctx->save_filesystem_core, path);
 }
 
-static ALWAYS_INLINE bool save_create_file(save_ctx_t *ctx, const char *path, uint64_t size) {
+static inline __attribute__((always_inline)) bool save_create_file(save_ctx_t *ctx, const char *path, uint64_t size) {
     return save_data_file_system_core_create_file(&ctx->save_filesystem_core, path, size);
 }
 
-static ALWAYS_INLINE bool save_delete_directory(save_ctx_t *ctx, const char *path) {
+static inline __attribute__((always_inline)) bool save_delete_directory(save_ctx_t *ctx, const char *path) {
     return save_data_file_system_core_delete_directory(&ctx->save_filesystem_core,path);
 }
 
-static ALWAYS_INLINE bool save_delete_file(save_ctx_t *ctx, const char *path) {
+static inline __attribute__((always_inline)) bool save_delete_file(save_ctx_t *ctx, const char *path) {
     return save_data_file_system_core_delete_file(&ctx->save_filesystem_core, path);
 }
 
-static ALWAYS_INLINE bool save_open_directory(save_ctx_t *ctx, save_data_directory_ctx_t *directory, const char *path, open_directory_mode_t mode) {
+static inline __attribute__((always_inline)) bool save_open_directory(save_ctx_t *ctx, save_data_directory_ctx_t *directory, const char *path, open_directory_mode_t mode) {
     return save_data_file_system_core_open_directory(&ctx->save_filesystem_core, directory, path, mode);
 }
 
-static ALWAYS_INLINE bool save_open_file(save_ctx_t *ctx, save_data_file_ctx_t *file, const char *path, open_mode_t mode) {
+static inline __attribute__((always_inline)) bool save_open_file(save_ctx_t *ctx, save_data_file_ctx_t *file, const char *path, open_mode_t mode) {
     return save_data_file_system_core_open_file(&ctx->save_filesystem_core, file, path, mode);
 }
 
-static ALWAYS_INLINE bool save_rename_directory(save_ctx_t *ctx, const char *old_path, const char *new_path) {
+static inline __attribute__((always_inline)) bool save_rename_directory(save_ctx_t *ctx, const char *old_path, const char *new_path) {
     return save_data_file_system_core_rename_directory(&ctx->save_filesystem_core, old_path, new_path);
 }
 
-static ALWAYS_INLINE bool save_rename_file(save_ctx_t *ctx, const char *old_path, const char *new_path) {
+static inline __attribute__((always_inline)) bool save_rename_file(save_ctx_t *ctx, const char *old_path, const char *new_path) {
     return save_data_file_system_core_rename_file(&ctx->save_filesystem_core, old_path, new_path);
 }
 
-static ALWAYS_INLINE bool save_get_entry_type(save_ctx_t *ctx, directory_entry_type_t *out_entry_type, const char *path) {
+static inline __attribute__((always_inline)) bool save_get_entry_type(save_ctx_t *ctx, directory_entry_type_t *out_entry_type, const char *path) {
     return save_data_file_system_core_get_entry_type(&ctx->save_filesystem_core, out_entry_type, path);
 }
 
-static ALWAYS_INLINE void save_get_free_space_size(save_ctx_t *ctx, uint64_t *out_free_space) {
+static inline __attribute__((always_inline)) void save_get_free_space_size(save_ctx_t *ctx, uint64_t *out_free_space) {
     return save_data_file_system_core_get_free_space_size(&ctx->save_filesystem_core, out_free_space);
 }
 
-static ALWAYS_INLINE void save_get_total_space_size(save_ctx_t *ctx, uint64_t *out_total_size) {
+static inline __attribute__((always_inline)) void save_get_total_space_size(save_ctx_t *ctx, uint64_t *out_total_size) {
     return save_data_file_system_core_get_total_space_size(&ctx->save_filesystem_core, out_total_size);
 }
 

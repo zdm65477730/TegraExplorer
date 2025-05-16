@@ -42,6 +42,15 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 #include <stdint.h>
 
+typedef enum
+{
+	OPEN_MODE_READ          = 1,
+	OPEN_MODE_WRITE         = 2,
+	OPEN_MODE_ALLOW_APPEND  = 4,
+	OPEN_MODE_READ_WRITE    = OPEN_MODE_READ | OPEN_MODE_WRITE,
+	OPEN_MODE_ALL           = OPEN_MODE_READ | OPEN_MODE_WRITE | OPEN_MODE_ALLOW_APPEND
+} open_mode_t;
+
 typedef struct {
     allocation_table_storage_ctx_t base_storage;
     const char *path;
@@ -50,7 +59,7 @@ typedef struct {
     open_mode_t mode;
 } save_data_file_ctx_t;
 
-static ALWAYS_INLINE void save_data_file_get_size(save_data_file_ctx_t *ctx, uint64_t *out_size) {
+static inline __attribute__((always_inline)) void save_data_file_get_size(save_data_file_ctx_t *ctx, uint64_t *out_size) {
     *out_size = ctx->size;
 }
 

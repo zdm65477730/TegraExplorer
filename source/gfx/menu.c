@@ -3,7 +3,7 @@
 #include "gfx.h"
 #include "gfxutils.h"
 #include "../hid/hid.h"
-#include <utils/util.h>
+#include <soc/timer.h>
 #include <utils/btn.h>
 #include <utils/sprintf.h>
 #include <string.h>

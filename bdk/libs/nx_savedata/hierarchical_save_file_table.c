@@ -311,7 +311,7 @@ bool save_hierarchical_file_table_rename_file(hierarchical_save_file_table_ctx_t
     return save_fs_list_change_key(&ctx->file_table, &old_key, &new_key);
 }
 
-static ALWAYS_INLINE bool save_is_sub_path(const char *path1, const char *path2) {
+static inline __attribute__((always_inline)) bool save_is_sub_path(const char *path1, const char *path2) {
     /* Check if either path is subpath of the other. */
     uint64_t path1_len = strlen(path1), path2_len = strlen(path2);
     if (path1_len == 0 || path2_len == 0)

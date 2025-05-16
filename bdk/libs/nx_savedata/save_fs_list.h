@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 shchmue
+ * Copyright (c) 2019-2020 shchmue
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU General Public License,
@@ -76,11 +76,11 @@ typedef struct {
 
 static_assert(sizeof(save_fs_list_entry_t) == 0x60, "Save filesystem list entry size is wrong!");
 
-static ALWAYS_INLINE uint32_t save_fs_list_read_entry(save_filesystem_list_ctx_t *ctx, uint32_t index, void *entry) {
+static inline __attribute__((always_inline)) uint32_t save_fs_list_read_entry(save_filesystem_list_ctx_t *ctx, uint32_t index, void *entry) {
     return save_allocation_table_storage_read(&ctx->storage, entry, index * SAVE_FS_LIST_ENTRY_SIZE, SAVE_FS_LIST_ENTRY_SIZE);
 }
 
-static ALWAYS_INLINE uint32_t save_fs_list_write_entry(save_filesystem_list_ctx_t *ctx, uint32_t index, const void *entry) {
+static inline __attribute__((always_inline)) uint32_t save_fs_list_write_entry(save_filesystem_list_ctx_t *ctx, uint32_t index, const void *entry) {
     return save_allocation_table_storage_write(&ctx->storage, entry, index * SAVE_FS_LIST_ENTRY_SIZE, SAVE_FS_LIST_ENTRY_SIZE);
 }
 
