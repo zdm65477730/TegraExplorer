@@ -116,8 +116,8 @@
 #define LV_INDEV_POINT_MARKER           0                      /*Mark the pressed points  (required: USE_LV_REAL_DRAW = 1)*/
 #define LV_INDEV_DRAG_LIMIT             10                     /*Drag threshold in pixels */
 #define LV_INDEV_DRAG_THROW             20                     /*Drag throw slow-down in [%]. Greater value means faster slow-down */
-#define LV_INDEV_LONG_PRESS_TIME        400                    /*Long press time in milliseconds*/
-#define LV_INDEV_LONG_PRESS_REP_TIME    1000 //Fix keyb        /*Repeated trigger period in long press [ms] */
+#define LV_INDEV_LONG_PRESS_TIME        5000                   /*Long press time in milliseconds*/
+#define LV_INDEV_LONG_PRESS_REP_TIME    1000 //Fix lv_kb       /*Repeated trigger period in long press [ms] */
 
 /*Color settings*/
 #define LV_COLOR_DEPTH         32                /*Color depth: 1/8/16/32*/
@@ -126,7 +126,7 @@
 #define LV_COLOR_TRANSP        LV_COLOR_LIME     /*Images pixels with this color will not be drawn (with chroma keying)*/
 
 /*Text settings*/
-#define LV_TXT_UTF8             0                /*Enable UTF-8 coded Unicode character usage */
+#define LV_TXT_UTF8             1                /*Enable UTF-8 coded Unicode character usage */
 #define LV_TXT_BREAK_CHARS     " ,.;:-_"         /*Can break texts on these chars*/
 #define LV_TXT_LINE_BREAK_LONG_LEN 12            /* If a character is at least this long, will break wherever "prettiest" */
 #define LV_TXT_LINE_BREAK_LONG_PRE_MIN_LEN 3     /* Minimum number of characters of a word to put on a line before a break */
